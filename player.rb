@@ -1,9 +1,10 @@
-# require neccesary files
+require_relative "game"
 
 class Player
   # (Complete parameters)
-  def initialize
-    # Complete this
+  def initialize(name,poke_name,poke_init)
+    @name = name
+    @poke = POKEMONS.new(poke_name, poke_init)
   end
 
   def select_move
