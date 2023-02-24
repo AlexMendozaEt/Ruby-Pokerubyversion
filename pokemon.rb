@@ -1,6 +1,6 @@
 # require neccesary files
 
-class Pokemon
+class Pokemon(poke_name, poke_init)
   # include neccesary modules
 
   # (complete parameters)
@@ -12,6 +12,18 @@ class Pokemon
     # If level is 1, set experience points to 0 in instance variable.
     # If level is not 1, calculate the minimum experience point for that level and store it in instance variable.
     # Calculate pokemon stats and store them in instance variable
+    Great Char:
+    Kind: Charmander
+    Level: 1
+    Type: fire
+    Stats:
+    HP: 12
+    Attack: 6
+    Defense: 6
+    Special Attack: 6
+    Special Defense: 6
+    Speed: 6
+    Experience Points: 0
   end
 
   def prepare_for_battle

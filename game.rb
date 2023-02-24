@@ -19,7 +19,7 @@ class Game
     choice_poke(player_name)
     poke_init = pokemon_char
     poke_name(poke_init)
-    poke_name = get_input("Give your pokemon a name?")
+    poke_name = get_input_poke("Give your pokemon a name?",poke_init)
     init_game(player_name, poke_name)
     menu_options = ["Stats", "Train", "Leader", "Exit"]
     action = get_menu_with_options(menu_options)
@@ -36,7 +36,7 @@ class Game
         puts "Invalid Leader"
       when "Exit"
         puts "Thanks for playing Pokemon Ruby"
-        puts "This game was created with love by:\nDiego Renato Oviedo, Alex Mendoza Etchebarne, Gabriel Nuñez, Ruben Cuadros Espinoza."
+        puts "This game was created with love by:\nDiego Renato Oviedo, Alex Mendoza Etchebarne, Gabriel Nuñez Arenas, Ruben Cuadros Espinoza."
         break
       end
       action = get_menu_with_options(menu_options)
