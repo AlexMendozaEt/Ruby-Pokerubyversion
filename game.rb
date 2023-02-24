@@ -15,7 +15,6 @@ class Game
     get_with_options(valid_pokes)
   end
 
-
   def start
     welcome
     player_name = get_input("First, what is your name?")
