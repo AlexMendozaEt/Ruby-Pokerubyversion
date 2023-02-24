@@ -25,10 +25,10 @@ class Game
     init_game(player_name, poke_name)
     menu_options = ["Stats", "Train", "Leader", "Exit"]
     action = get_menu_with_options(menu_options)
+    poke = POKEMONS.new(poke_name, poke_init)
     loop do
       case action.capitalize
       when "Stats"
-        poke = POKEMONS.new(poke_name, poke_init)
         poke.show_stats
       when "Train"
         # Código para crear un evento

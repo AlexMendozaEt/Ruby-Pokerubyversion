@@ -19,7 +19,7 @@ class POKEMONS
     @base_stats = Pokedex::POKEMONS[@poke_init][:base_stats]
     @types = Pokedex::POKEMONS[@poke_init][:type]
     @individual_values = { hp: rand(1..30), attack: rand(1..30), defense: rand(1..30), special_attack: rand(1..30), special_defense: rand(1..30), speed: rand(1..30) }
-    @level = 1
+    @level = 10
     @effort_values = {special_defense: 0}
   
     # Retrieve pokemon info from Pokedex and set instance variables
