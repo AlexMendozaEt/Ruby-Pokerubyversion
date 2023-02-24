@@ -1,6 +1,7 @@
 # require neccesary files
 require_relative "get_input"
 require_relative "text_init"
+require_relative "pokemon"
 require_relative "pokedex/pokemons"
 
 class Game
@@ -26,8 +27,8 @@ class Game
     loop do
       case action.capitalize
       when "Stats"
-        # Código para crear un evento
-        puts "Invalid Stats"
+        poke = POKEMONS.new(poke_name, poke_init)
+        poke.show_stats
       when "Train"
         # Código para crear un evento
         puts "Invalid Train"
