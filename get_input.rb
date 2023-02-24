@@ -24,6 +24,19 @@ module GetInput
 
     input
   end
+  
+  def get_input_poke(prompt,poke_init)
+    input = ""
+    puts prompt
+    print "> "
+    input = gets.chomp
+
+    if input.empty?
+      input = poke_init
+    else
+      input
+    end
+  end
 
   def get_menu_with_options(options)
     input = ""

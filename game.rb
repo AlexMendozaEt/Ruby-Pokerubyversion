@@ -19,33 +19,32 @@ class Game
     choice_poke(player_name)
     poke_init = pokemon_char
     poke_name(poke_init)
-    poke_name = get_input("Give your pokemon a name?")
+    poke_name = get_input_poke("Give your pokemon a name?",poke_init)
     init_game(player_name, poke_name)
     menu_options = ["Stats", "Train", "Leader", "Exit"]
-    input = get_menu_with_options(menu_options)
+    action = get_menu_with_options(menu_options)
+    loop do
+      case action.capitalize
+      when "Stats"
+        # Código para crear un evento
+        puts "Invalid Stats"
+      when "Train"
+        # Código para crear un evento
+        puts "Invalid Train"
+      when "Leader"
+        # Código para crear un evento
+        puts "Invalid Leader"
+      when "Exit"
+        puts "Thanks for playing Pokemon Ruby"
+        puts "This game was created with love by:\nDiego Renato Oviedo, Alex Mendoza Etchebarne, Gabriel Nuñez Arenas, Ruben Cuadros Espinoza."
+        break
+      end
+      action = get_menu_with_options(menu_options)
+    end
   end
+end
 
 =begin
-    # Then create a Player with that information and store it in @player
-
-    # Suggested game flow
-    action = menu
-    until action == "Exit"
-      case action
-      when "Train"
-        train
-        action = menu
-      when "Leader"
-        challenge_leader
-        action = menu
-      when "Stats"
-        show_stats
-        action = menu
-      end
-    end
-
-    goodbye
-  end
 
   def train
     # Complete this
@@ -66,4 +65,3 @@ class Game
   def menu
     # Complete this
 =end
-end
