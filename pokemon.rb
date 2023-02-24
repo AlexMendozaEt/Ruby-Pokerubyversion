@@ -6,20 +6,17 @@ require_relative "game"
 class POKEMONS
   # include neccesary modules
   include Pokedex
-  attr_reader :attack
+  attr_reader :attack, :level
   # (complete parameters)
-  @@stat_HP = nil
-  @@defense = nil
-  @@special_attack = nil
-  @@special_defense = nil
-  @@speed = nil
-  def initialize(poke_name, poke_init)
+  @@stats = {}
+
+  def initialize(poke_name, poke_init, level = 1)
     @poke_name = poke_name
     @poke_init = poke_init
     @base_stats = Pokedex::POKEMONS[@poke_init][:base_stats]
     @types = Pokedex::POKEMONS[@poke_init][:type]
     @individual_values = { hp: rand(1..30), attack: rand(1..30), defense: rand(1..30), special_attack: rand(1..30), special_defense: rand(1..30), speed: rand(1..30) }
-    @level = 10
+    @level = level
     @effort_values = {special_defense: 0}
   
     # Retrieve pokemon info from Pokedex and set instance variables
@@ -33,38 +30,38 @@ class POKEMONS
 
 
   def stats_gene
-    @stats = {}
-    @stats[:hp] = ((2 * @base_stats[:hp] +  @individual_values[:hp] + 0) * @level / 100 + @level + 10).floor
-    @stats[:attack] = ((2 * @base_stats[:attack] +  @individual_values[:attack] + 0) * @level / 100 + 5).floor
-    @stats[:defense] = ((2 * @base_stats[:defense] +  @individual_values[:defense] + 0) * @level / 100 + 5).floor
-    @stats[:special_attack] = ((2 * @base_stats[:special_attack] +  @individual_values[:special_attack] + 0) * @level / 100 + 5).floor
-    @stats[:special_defense] = ((2 * @base_stats[:special_defense] +  @individual_values[:special_defense] + 0) * @level / 100 + 5).floor
-    @stats[:speed] = ((2 * @base_stats[:speed] +  @individual_values[:speed] + 0) * @level / 100 + 5).floor
+    @@stats[:hp] = ((2 * @base_stats[:hp] +  @individual_values[:hp] + 0) * @level / 100 + @level + 10).floor
+    @@stats[:attack] = ((2 * @base_stats[:attack] +  @individual_values[:attack] + 0) * @level / 100 + 5).floor
+    @@stats[:defense] = ((2 * @base_stats[:defense] +  @individual_values[:defense] + 0) * @level / 100 + 5).floor
+    @@stats[:special_attack] = ((2 * @base_stats[:special_attack] +  @individual_values[:special_attack] + 0) * @level / 100 + 5).floor
+    @@stats[:special_defense] = ((2 * @base_stats[:special_defense] +  @individual_values[:special_defense] + 0) * @level / 100 + 5).floor
+    @@stats[:speed] = ((2 * @base_stats[:speed] +  @individual_values[:speed] + 0) * @level / 100 + 5).floor
   end
   
   def show_stats
-    self.stats_gene
-    stats_copy = @stats.dup.freeze
+    stats_gene
     puts "#{@poke_name.capitalize}:"
     puts "Kind: #{@poke_init}"
     puts "Level: #{@level}"
     print "Type: "
     @types.each {|i,j| print "#{i} #{j}"}
     puts "\nStats:"
-    puts "HP: #{stats_copy[:hp]}"
-    puts "Attack: #{stats_copy[:attack]}"
-    puts "Defense: #{stats_copy[:defense]}"
-    puts "Special attack: #{stats_copy[:special_attack]}"
-    puts "Special defense: #{stats_copy[:special_defense]}"
-    puts "Speed: #{stats_copy[:speed]}"
+    puts "HP: #{@@stats[:hp]}"
+    puts "Attack: #{@@stats[:attack]}"
+    puts "Defense: #{@@stats[:defense]}"
+    puts "Special attack: #{@@stats[:special_attack]}"
+    puts "Special defense: #{@@stats[:special_defense]}"
+    puts "Speed: #{@@stats[:speed]}"
   end
 
   def prepare_for_battle
-    # Complete this
+    p @stats_copy
   end
 
   def receive_damage
-    # Complete this
+    stats_gene
+    @@stats[:hp] -= 2
+    @@stats[:hp]
   end
 
   def set_current_move

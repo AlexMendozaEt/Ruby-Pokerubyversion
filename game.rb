@@ -15,6 +15,7 @@ class Game
     get_with_options(valid_pokes)
   end
 
+
   def start
     welcome
     player_name = get_input("First, what is your name?")
@@ -30,9 +31,20 @@ class Game
       case action.capitalize
       when "Stats"
         poke.show_stats
+        puts poke.receive_damage
+        poke.show_stats
+        puts poke.receive_damage
       when "Train"
-        # Código para crear un evento
-        puts "Invalid Train"
+        def pokemon_bot_char
+          valid_pokes = Pokedex::POKEMONS.keys
+          valid_pokes.sample
+        end
+        battle_option = ["Fight","Leave"]
+        poke_bot = pokemon_bot_char
+        poke_random = POKEMONS.new(poke_name, poke_bot, rand(1..10))
+        poke_leve = poke_random.level
+        text_battle(poke_bot,poke_leve)
+        #get_menu_with_options(battle_option)
       when "Leader"
         # Código para crear un evento
         puts "Invalid Leader"
@@ -45,25 +57,3 @@ class Game
     end
   end
 end
-
-=begin
-
-  def train
-    # Complete this
-  end
-
-  def challenge_leader
-    # Complete this
-  end
-
-  def show_stats
-    # Complete this
-  end
-
-  def goodbye
-    # Complete this
-  end
-
-  def menu
-    # Complete this
-=end

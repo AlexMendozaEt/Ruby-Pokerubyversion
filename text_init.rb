@@ -29,4 +29,10 @@ module Texts
     puts "\n#{player_name.upcase}, raise your young #{poke_name.upcase} by making it fight!"
     puts "When you feel ready you can challenge BROCK, the PEWTER's GYM LEADER\n"
   end
+
+  def text_battle(poke_bot,poke_leve)
+    puts "Great master challenge Random Person for training"
+    puts "Random Person has a #{poke_bot} level #{poke_leve} "
+    puts "What do you want to do now?"
+  end
 end
