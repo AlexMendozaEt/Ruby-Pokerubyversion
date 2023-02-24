@@ -3,6 +3,7 @@ require_relative "get_input"
 require_relative "text_init"
 require_relative "pokemon"
 require_relative "pokedex/pokemons"
+require_relative "player"
 
 class Game
   include GetInput
