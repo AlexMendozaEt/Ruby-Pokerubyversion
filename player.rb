@@ -2,9 +2,7 @@ require_relative "game"
 
 class Player
   # (Complete parameters)
-  def initialize(name,poke_name,poke_init)
-    @name = name
-    @poke = POKEMONS.new(poke_name, poke_init)
+  def initialize()
   end
 
   def select_move

@@ -31,11 +31,18 @@ class Game
       when "Stats"
         poke.show_stats
       when "Train"
-        # Código para crear un evento
-        puts "Invalid Train"
+        def pokemon_bot_char
+          valid_pokes = Pokedex::POKEMONS.keys
+          valid_pokes.sample
+        end
+        battle_option = ["Fight","Leave"]
+        poke_bot = pokemon_bot_char
+        poke_random = POKEMONS.new(poke_name, poke_bot, rand(1..10))
+        poke_leve = poke_random.level
+        text_battle(poke_bot,poke_leve)
+        action_battle = get_menu_with_options(battle_option)
       when "Leader"
-        # Código para crear un evento
-        puts "Invalid Leader"
+        puts poke.receive_damage
       when "Exit"
         puts "Thanks for playing Pokemon Ruby"
         puts "This game was created with love by:\nDiego Renato Oviedo, Alex Mendoza Etchebarne, Gabriel Nuñez Arenas, Ruben Cuadros Espinoza."
@@ -45,25 +52,3 @@ class Game
     end
   end
 end
-
-=begin
-
-  def train
-    # Complete this
-  end
-
-  def challenge_leader
-    # Complete this
-  end
-
-  def show_stats
-    # Complete this
-  end
-
-  def goodbye
-    # Complete this
-  end
-
-  def menu
-    # Complete this
-=end
