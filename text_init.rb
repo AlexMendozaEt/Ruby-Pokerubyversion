@@ -35,4 +35,13 @@ module Texts
     puts "Random Person has a #{poke_bot} level #{poke_leve} "
     puts "What do you want to do now?"
   end
+  def text_fight(player_name,poke_name,poke_bot,poke_random,poke)
+    puts "\nRandom Person sent out #{poke_bot.upcase}!"
+    puts "#{player_name.capitalize} sent out #{poke_name.upcase}!"
+    puts "\n-------------------Battle Start!-------------------"
+    puts "\n#{player_name.capitalize}'s #{poke_name.capitalize} - Level #{poke.level}"
+    puts "HP: #{poke.stats[:hp]}"
+    puts "Random Person's #{poke_bot.capitalize} - Level #{poke_random.level}"
+    puts "HP: #{poke_random.stats[:hp]}"
+  end
 end

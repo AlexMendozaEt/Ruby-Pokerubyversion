@@ -26,6 +26,7 @@ class Game
     menu_options = ["Stats", "Train", "Leader", "Exit"]
     action = get_menu_with_options(menu_options)
     poke = POKEMONS.new(poke_name, poke_init)
+    moves_options = ["tackle", "vine whip"]
     loop do
       case action.capitalize
       when "Stats"
@@ -41,6 +42,17 @@ class Game
         poke_leve = poke_random.level
         text_battle(poke_bot,poke_leve)
         action_battle = get_menu_with_options(battle_option)
+        case action_battle
+        when "Fight"
+          text_fight(player_name,poke_name,poke_bot,poke_random,poke)
+          puts "\nGreat master, select your move:\n\n"
+          moves_action = get_with_options_battle(moves_options)
+          puts "\n--------------------------------------------------"
+          puts "#{poke_name.capitalize} used #{moves_action.upcase}!"
+          
+        when "Leave"
+          puts "\n"
+        end
       when "Leader"
         puts poke.receive_damage
       when "Exit"

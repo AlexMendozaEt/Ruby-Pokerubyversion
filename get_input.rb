@@ -43,7 +43,7 @@ module GetInput
     until options.include?(input.capitalize)
       print_menu_options(options)
       print "> "
-      input = gets.chomp
+      input = gets.chomp.capitalize
     end
     input
   end
@@ -54,6 +54,15 @@ module GetInput
       print_options(options)
       print "> "
       input = gets.chomp.capitalize
+    end
+    input
+  end
+  def get_with_options_battle(options)
+    input = ""
+    until options.include?(input.downcase)
+      print_options(options)
+      print "> "
+      input = gets.chomp.downcase
     end
     input
   end
