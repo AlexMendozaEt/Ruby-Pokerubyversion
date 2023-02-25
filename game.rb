@@ -3,8 +3,6 @@ require_relative "get_input"
 require_relative "text_init"
 require_relative "pokemon"
 require_relative "pokedex/pokemons"
-require_relative "player"
-require_relative "battle"
 
 class Game
   include GetInput
@@ -51,16 +49,19 @@ class Game
             puts "\n#{player_name.capitalize}, select your move:\n\n"
             moves_action = get_with_options_battle(moves_options)
             poke.set_current_move(moves_action)
-            puts "\n--------------------------------------------------"
-            damage_poke = poke.attack(poke_random)
-            puts "--------------------------------------------------"
             poke_random.set_current_move(Pokedex::POKEMONS[poke_bot][:moves].sample)
-            damage_bot = poke_random.attack(poke)
-            poke.receive_damage(damage_bot)
-            poke_random.receive_damage(damage_poke)
+            first = poke.select_first(poke,poke_random)
+            second = first == poke ? poke_random : poke
+            puts "\n--------------------------------------------------"
+            damage_first = first.attack(second)
+            puts "----------------------------------------------------"
+            damage_second = second.attack(first)
+            second.receive_damage(damage_first)
+            first.receive_damage(damage_second)
           end
           if poke.stats[:hp].positive?
-            player_wins_exp(poke)
+            player_wins_exp(poke,poke_random)
+            poke.increase_stats(poke_random)
           else
             bot_wins(poke,poke_random)
           end
@@ -68,10 +69,41 @@ class Game
           puts "\n"
         end
       when "Leader"
-        puts poke.receive_damage
+        battle_option_leder = ["Fight","Leave"]
+        poke_lider = POKEMONS.new("Onix", "Onix", 10)
+        leder_fight
+        action_battle_leder = get_menu_with_options(battle_option_leder)
+        case action_battle_leder
+        when "Fight"
+          text_fight(player_name,poke_name,"Onix","Onix",poke)
+          while poke.stats[:hp].positive? && poke_lider.stats[:hp].positive?
+            stats_fight(player_name,poke_name,"Onix",poke_lider,poke)
+            puts "\n#{player_name.capitalize}, select your move:\n\n"
+            moves_action = get_with_options_battle(moves_options)
+            poke.set_current_move(moves_action)
+            poke_lider.set_current_move(Pokedex::POKEMONS["Onix"][:moves].sample)
+            first = poke.select_first(poke,poke_lider)
+            second = first == poke ? poke_lider : poke
+            puts "\n--------------------------------------------------"
+            damage_first = first.attack(second)
+            puts "----------------------------------------------------"
+            damage_second = second.attack(first)
+            second.receive_damage(damage_first)
+            first.receive_damage(damage_second)
+          end
+          if poke.stats[:hp].positive?
+            player_wins_exp(poke,poke_lider)
+            poke.increase_stats(poke_lider)
+            win_battle
+          else
+            bot_wins(poke,poke_lider)
+          end
+        when "Leave"
+          puts "\n"
+        end
       when "Exit"
         puts "Thanks for playing Pokemon Ruby"
-        puts "This game was created with love by:\nDiego Renato Oviedo, Alex Mendoza Etchebarne, Gabriel Nuñez Arenas, Ruben Cuadros Espinoza."
+        puts "This game was created with love by:\nAlex Mendoza Etchebarne, Gabriel Nuñez Arenas, Ruben Cuadros Espinoza, Diego Renato Oviedo."
         break
       end
       poke.prepare_for_battle

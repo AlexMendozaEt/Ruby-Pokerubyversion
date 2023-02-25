@@ -2,16 +2,13 @@
 require_relative "pokedex/pokemons"
 require_relative "pokedex/moves"
 require_relative "game"
-require_relative "battle"
-
-
 
 class POKEMONS
   # include neccesary modules
   include Pokedex
   include Pokedex
 
-  attr_reader :attack, :level, :stats, :set_current_move, :types, :damage, :poke_name, :hp
+  attr_reader :attack, :level, :stats, :set_current_move, :types, :damage, :poke_name, :hp, :moves, :base_experience
 
 
   def initialize(poke_name, poke_init, level = 1)
@@ -27,14 +24,9 @@ class POKEMONS
     @set_current_move = nil
     @damage = nil
     @hp = ((2 * @base_stats[:hp] +  @individual_values[:hp] + 0) * @level / 100 + @level + 10).floor
+    @base_experience = Pokedex::POKEMONS[@poke_init][:base_exp]
+    @current_exp = 0
     stats_gene
-    # Retrieve pokemon info from Pokedex and set instance variables
-    # Calculate Individual Values and store them in instance variable
-    # Create instance variable with effort values. All set to 0
-    # Store the level in instance variable
-    # If level is 1, set experience points to 0 in instance variable.
-    # If level is not 1, calculate the minimum experience point for that level and store it in instance variable.
-    # Calculate pokemon stats and store them in instance variable
   end
 
   def stats_gene
@@ -60,10 +52,12 @@ class POKEMONS
     puts "Special attack: #{@stats[:special_attack]}"
     puts "Special defense: #{@stats[:special_defense]}"
     puts "Speed: #{@stats[:speed]}"
+    puts "Experience Points: #{@current_exp}"
   end
 
   def prepare_for_battle
     @stats[:hp] = @hp
+    @experience
   end
 
   def receive_damage(damage)
@@ -72,6 +66,28 @@ class POKEMONS
 
   def set_current_move(move_select)
     @set_current_move = move_select
+  end
+  
+  def select_first(poke,poke_random)
+    player_priority = @moves[@set_current_move][:priority]
+    bot_priority = poke_random.moves[@set_current_move][:priority]
+
+    random_priority = []
+
+    if player_priority > bot_priority
+      return poke
+    elsif player_priority < bot_priority
+      return poke_random
+    end
+
+    if @stats[:speed] > poke_random.stats[:speed]
+      return poke
+    elsif @stats[:speed] < poke_random.stats[:speed]
+      return poke_random
+    end
+
+    random_priority.push(poke,poke_random)
+    random_priority.sample
   end
 
   def fainted?
@@ -136,13 +152,29 @@ class POKEMONS
     @damage
   end
 
-  def increase_stats(target)
-    # Increase stats base on the defeated pokemon and print message "#[pokemon name] gained [amount] experience points"
+  def increase_stats(poke_target)
+    @experience_gain = (poke_target.base_experience * poke_target.level / 7.0).floor
+    puts "#{@poke_name.capitalize} gained #{@experience_gain} experience points"
+    @experience_bar = ((6/5 * (@level+1)**3) - 15*((@level+1)**2)+ 100*(@level+1) - 140).floor
+179
+    @current_exp += @experience_gain
 
-    # If the new experience point are enough to level up, do it and print
-    # message "#[pokemon name] reached level [level]!" # -- Re-calculate the stat
+    @experience_restante = 0
+
+    if @current_exp  > @experience_bar
+      @experience_restante = @current_exp - @experience_bar
+      @level += 1
+      @hp = ((2 * @base_stats[:hp] +  @individual_values[:hp] + 0) * @level / 100 + @level + 10).floor
+      stats_gene
+      @experience_bar = ((6/5 * (@level+1)**3) - 15*((@level+1)**2)+ 100*(@level+1) - 140).floor
+      @current_exp = @experience_restante
+      puts "#{@poke_name.capitalize} reached level #{@level}!"
+      puts "-------------------Battle Ended!------------------\n\n"
+    else
+      @current_exp
+      puts "-------------------Battle Ended!------------------\n\n"
+    end 
   end
-
   # private methods:
   # Create here auxiliary methods
 end
