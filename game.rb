@@ -40,16 +40,16 @@ class Game
         poke_bot = pokemon_bot_char
         poke_random = POKEMONS.new(poke_name, poke_bot, rand(1..10))
         poke_leve = poke_random.level
-        text_battle(poke_bot,poke_leve)
+        text_battle(player_name,poke_bot,poke_leve)
         action_battle = get_menu_with_options(battle_option)
         case action_battle
         when "Fight"
           text_fight(player_name,poke_name,poke_bot,poke_random,poke)
-          puts "\nGreat master, select your move:\n\n"
+          puts "\n#{player_name.capitalize}, select your move:\n\n"
           moves_action = get_with_options_battle(moves_options)
+          poke.set_current_move(moves_action)
           puts "\n--------------------------------------------------"
-          puts "#{poke_name.capitalize} used #{moves_action.upcase}!"
-          
+          poke.attack
         when "Leave"
           puts "\n"
         end

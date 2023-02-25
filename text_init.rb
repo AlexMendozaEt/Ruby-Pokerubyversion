@@ -16,7 +16,7 @@ module Texts
     puts "\nRight! So your name is #{player_name.upcase}!"
     puts "Your very own POKEMON legend is about to unfold! A world of"
     puts "dreams and adventures with POKEMON awaits! Let's go!"
-    puts "Here, GREAT MASTER! There are 3 POKEMON here! Haha!"
+    puts "Here, #{player_name.upcase} ! There are 3 POKEMON here! Haha!"
     puts "When I was young, I was a serious POKEMON trainer."
     puts "In my old age, I have only 3 left, but you can have one! Choose!\n\n"
   end
@@ -30,8 +30,8 @@ module Texts
     puts "When you feel ready you can challenge BROCK, the PEWTER's GYM LEADER\n"
   end
 
-  def text_battle(poke_bot,poke_leve)
-    puts "Great master challenge Random Person for training"
+  def text_battle(player_name,poke_bot,poke_leve)
+    puts "#{player_name.capitalize} challenge Random Person for training"
     puts "Random Person has a #{poke_bot} level #{poke_leve} "
     puts "What do you want to do now?"
   end

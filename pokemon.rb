@@ -70,8 +70,9 @@ class POKEMONS
     !@health.positive?
   end
 
-  def attack(target)
+  def attack()
     # Print attack message 'Tortuguita used MOVE!'
+    puts "#{@poke_name.capitalize} used #{@set_current_move.upcase}!"
     # Accuracy check
     # If the movement is not missed
     # -- Calculate base damage
