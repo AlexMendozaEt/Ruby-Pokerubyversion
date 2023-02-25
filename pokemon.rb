@@ -1,12 +1,16 @@
 # require neccesary files
 require_relative "pokedex/pokemons"
+require_relative "pokedex/moves"
 require_relative "game"
+
 
 
 class POKEMONS
   # include neccesary modules
   include Pokedex
-  attr_reader :attack, :level, :stats, :set_current_move
+  include Pokedex
+
+  attr_reader :attack, :level, :stats, :set_current_move, :types
 
 
   def initialize(poke_name, poke_init, level = 1)
@@ -14,6 +18,8 @@ class POKEMONS
     @poke_init = poke_init
     @base_stats = Pokedex::POKEMONS[@poke_init][:base_stats]
     @types = Pokedex::POKEMONS[@poke_init][:type]
+    @moves = Pokedex::MOVES
+    @type_multiplier = Pokedex::TYPE_MULTIPLIER
     @individual_values = { hp: rand(1..30), attack: rand(1..30), defense: rand(1..30), special_attack: rand(1..30), special_defense: rand(1..30), speed: rand(1..30) }
     @level = level
     @effort_values = {special_defense: 0}
@@ -70,14 +76,35 @@ class POKEMONS
     !@health.positive?
   end
 
-  def attack()
-    # Print attack message 'Tortuguita used MOVE!'
+  def attack(poke_random)
     puts "#{@poke_name.capitalize} used #{@set_current_move.upcase}!"
     # Accuracy check
     # If the movement is not missed
-    # -- Calculate base damage
-    # -- Critical Hit check
-    # -- If critical, multiply base damage and print message 'It was CRITICAL hit!'
+    damage = (((2 * level / 5.0 + 2).floor * @stats[:attack] * 40 / poke_random.stats[:defense]).floor / 50.0).floor + 2
+    crit_pro = rand(1..16)
+    if crit_pro == 1
+      damage = damage * 1.5
+      puts "It was CRITICAL hit!"
+    else
+      damage
+    end
+    
+    @move_type = @moves[@set_current_move][:type]
+    
+    @attack_effectiveness = []
+    @type_multiplier.each do |i|
+      if i[:user] == @move_type && i[:target].include?(poke_random.types)
+        @attack_effectiveness.push(i)
+      end
+    end
+
+    p @attack_effectiveness
+ 
+
+
+    
+    
+
     # -- Effectiveness check
     # -- Mutltiply damage by effectiveness multiplier and round down. Print message if neccesary
     # ---- "It's not very effective..." when effectivenes is less than or equal to 0.5

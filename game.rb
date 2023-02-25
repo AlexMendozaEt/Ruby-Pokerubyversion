@@ -26,7 +26,7 @@ class Game
     menu_options = ["Stats", "Train", "Leader", "Exit"]
     action = get_menu_with_options(menu_options)
     poke = POKEMONS.new(poke_name, poke_init)
-    moves_options = ["tackle", "vine whip"]
+    moves_options = Pokedex::POKEMONS[poke_init][:moves]
     loop do
       case action.capitalize
       when "Stats"
@@ -49,7 +49,7 @@ class Game
           moves_action = get_with_options_battle(moves_options)
           poke.set_current_move(moves_action)
           puts "\n--------------------------------------------------"
-          poke.attack
+          poke.attack(poke_random)
         when "Leave"
           puts "\n"
         end
