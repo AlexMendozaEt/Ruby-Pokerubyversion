@@ -30,40 +30,46 @@ module Texts
     puts "When you feel ready you can challenge BROCK, the PEWTER's GYM LEADER\n"
   end
 
-  def text_battle(player_name,poke_bot,poke_leve)
+  def text_battle(player_name, poke_bot, poke_leve)
     puts "#{player_name.capitalize} challenge Random Person for training"
     puts "Random Person has a #{poke_bot} level #{poke_leve} "
     puts "What do you want to do now?"
   end
-  def text_fight(player_name,poke_name,poke_bot,poke_random,poke)
+
+  def text_fight(player_name, poke_name, poke_bot, _poke_random, _poke)
     puts "\nRandom Person sent out #{poke_bot.upcase}!"
     puts "#{player_name.capitalize} sent out #{poke_name.upcase}!"
     puts "\n-------------------Battle Start!-------------------"
   end
-  def stats_fight(player_name,poke_name,poke_bot,poke_random,poke)
+
+  def stats_fight(player_name, poke_name, poke_bot, poke_random, poke)
     puts "\n#{player_name.capitalize}'s #{poke_name.capitalize} - Level #{poke.level}"
     puts "HP: #{poke.stats[:hp]}"
     puts "Random Person's #{poke_bot.capitalize} - Level #{poke_random.level}"
     puts "HP: #{poke_random.stats[:hp]}"
   end
-  def player_wins_exp(poke,poke_random)
+
+  def player_wins_exp(poke, poke_random)
     puts "--------------------------------------------------"
     puts "#{poke_random.poke_name.capitalize} FAINTED!"
     puts "--------------------------------------------------"
     puts "#{poke.poke_name.capitalize} WINS!"
   end
-  def bot_wins(poke,poke_random)
+
+  def bot_wins(poke, poke_random)
     puts "--------------------------------------------------"
     puts "#{poke.poke_name.capitalize} FAINTED!"
     puts "--------------------------------------------------"
     puts "#{poke_random.poke_name} WINS!"
     puts "-------------------Battle Ended!------------------\n\n"
   end
+
   def leder_fight
     puts "Great master challenge the Gym Leader Brock for a fight!"
     puts "Brock has a Onix level 10"
     puts "What do you want to do now? "
   end
+
   def win_battle
     puts "Congratulation! You have won the game!"
     puts "You can continue training your Pokemon if you want"
