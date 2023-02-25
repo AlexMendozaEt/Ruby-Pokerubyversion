@@ -46,11 +46,11 @@ module Texts
     puts "Random Person's #{poke_bot.capitalize} - Level #{poke_random.level}"
     puts "HP: #{poke_random.stats[:hp]}"
   end
-  def player_wins_exp(poke)
+  def player_wins_exp(poke,poke_random)
+    puts "--------------------------------------------------"
+    puts "#{poke_random.poke_name.capitalize} FAINTED!"
     puts "--------------------------------------------------"
     puts "#{poke.poke_name.capitalize} WINS!"
-    puts "#{poke.poke_name.capitalize}gained 18 experience points"
-    puts "-------------------Battle Ended!------------------\n\n"
   end
   def bot_wins(poke,poke_random)
     puts "--------------------------------------------------"
@@ -58,5 +58,14 @@ module Texts
     puts "--------------------------------------------------"
     puts "#{poke_random.poke_name} WINS!"
     puts "-------------------Battle Ended!------------------\n\n"
+  end
+  def leder_fight
+    puts "Great master challenge the Gym Leader Brock for a fight!"
+    puts "Brock has a Onix level 10"
+    puts "What do you want to do now? "
+  end
+  def win_battle
+    puts "Congratulation! You have won the game!"
+    puts "You can continue training your Pokemon if you want"
   end
 end
