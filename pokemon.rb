@@ -2,6 +2,7 @@
 require_relative "pokedex/pokemons"
 require_relative "pokedex/moves"
 require_relative "game"
+require_relative "battle"
 
 
 
@@ -10,7 +11,7 @@ class POKEMONS
   include Pokedex
   include Pokedex
 
-  attr_reader :attack, :level, :stats, :set_current_move, :types
+  attr_reader :attack, :level, :stats, :set_current_move, :types, :damage, :poke_name, :hp
 
 
   def initialize(poke_name, poke_init, level = 1)
@@ -24,6 +25,8 @@ class POKEMONS
     @level = level
     @effort_values = {special_defense: 0}
     @set_current_move = nil
+    @damage = nil
+    @hp = ((2 * @base_stats[:hp] +  @individual_values[:hp] + 0) * @level / 100 + @level + 10).floor
     stats_gene
     # Retrieve pokemon info from Pokedex and set instance variables
     # Calculate Individual Values and store them in instance variable
@@ -34,17 +37,16 @@ class POKEMONS
     # Calculate pokemon stats and store them in instance variable
   end
 
-
   def stats_gene
     @stats = {}
-    @stats[:hp] = ((2 * @base_stats[:hp] +  @individual_values[:hp] + 0) * @level / 100 + @level + 10).floor
+    @stats[:hp] = @hp
     @stats[:attack] = ((2 * @base_stats[:attack] +  @individual_values[:attack] + 0) * @level / 100 + 5).floor
     @stats[:defense] = ((2 * @base_stats[:defense] +  @individual_values[:defense] + 0) * @level / 100 + 5).floor
     @stats[:special_attack] = ((2 * @base_stats[:special_attack] +  @individual_values[:special_attack] + 0) * @level / 100 + 5).floor
     @stats[:special_defense] = ((2 * @base_stats[:special_defense] +  @individual_values[:special_defense] + 0) * @level / 100 + 5).floor
     @stats[:speed] = ((2 * @base_stats[:speed] +  @individual_values[:speed] + 0) * @level / 100 + 5).floor
   end
-  
+
   def show_stats
     puts "#{@poke_name.capitalize}:"
     puts "Kind: #{@poke_init}"
@@ -61,11 +63,11 @@ class POKEMONS
   end
 
   def prepare_for_battle
-    p @stats_copy
+    @stats[:hp] = @hp
   end
 
-  def receive_damage
-    @stats[:hp] -= 2
+  def receive_damage(damage)
+    @stats[:hp] -= damage
   end
 
   def set_current_move(move_select)
@@ -76,42 +78,62 @@ class POKEMONS
     !@health.positive?
   end
 
-  def attack(poke_random)
+  def attack(poke_target)
+
     puts "#{@poke_name.capitalize} used #{@set_current_move.upcase}!"
-    # Accuracy check
-    # If the movement is not missed
-    damage = (((2 * level / 5.0 + 2).floor * @stats[:attack] * 40 / poke_random.stats[:defense]).floor / 50.0).floor + 2
-    crit_pro = rand(1..16)
-    if crit_pro == 1
-      damage = damage * 1.5
-      puts "It was CRITICAL hit!"
+
+    @move_type = @moves[@set_current_move][:type]
+
+    @accuracy = 1
+
+    if @moves[@set_current_move][:accuracy] == 90
+        rand(1..10) == 10 ? @accuracy = 0 : @accuracy
+    end
+
+    if Pokedex::SPECIAL_MOVE_TYPE.include?(@move_type)
+      @damage = (((2 * level / 5.0 + 2).floor * @stats[:special_attack] * 40 / poke_target.stats[:special_defense]).floor / 50.0).floor + 2
     else
-      damage
+      @damage = (((2 * level / 5.0 + 2).floor * @stats[:attack] * 40 / poke_target.stats[:defense]).floor / 50.0).floor + 2
     end
     
-    @move_type = @moves[@set_current_move][:type]
+    crit_pro = rand(1..16)
+
+    if crit_pro == 1
+      @damage = damage * 1.5
+      puts "It was CRITICAL hit!"
+    else
+      @damage
+    end
     
-    @attack_effectiveness = []
-    @type_multiplier.each do |i|
-      if i[:user] == @move_type && i[:target].include?(poke_random.types)
-        @attack_effectiveness.push(i)
+    effectiveness = 1
+    Pokedex::TYPE_MULTIPLIER.each do |data_effectiveness|
+      if data_effectiveness[:user] == @move_type && poke_target.types.include?(data_effectiveness[:target])
+        effectiveness = data_effectiveness[:multiplier]
+        break
       end
     end
 
-    p @attack_effectiveness
- 
+    @damage = (@damage * effectiveness).floor
 
-
-    
-    
-
-    # -- Effectiveness check
-    # -- Mutltiply damage by effectiveness multiplier and round down. Print message if neccesary
-    # ---- "It's not very effective..." when effectivenes is less than or equal to 0.5
-    # ---- "It's super effective!" when effectivenes is greater than or equal to 1.5
-    # ---- "It doesn't affect [target name]!" when effectivenes is 0
-    # -- Inflict damage to target and print message "And it hit [target name] with [damage] damage""
-    # Else, print "But it MISSED!"
+    if @accuracy == 0
+      puts "Hit #{poke_target.poke_name} with #{@damage} damage"
+      puts "But it MISSED!"
+      @damage = @damage * @accuracy
+    else
+      if effectiveness == 0
+        puts "It doesn't affect! #{poke_target.poke_name}"
+        puts "And it hit #{poke_target.poke_name} with #{@damage} damage"
+      elsif effectiveness == 0.5
+        puts "It's not very effective..."
+        puts "And it hit #{poke_target.poke_name} with #{@damage} damage"
+      elsif effectiveness == 1
+        puts "Hit #{poke_target.poke_name} with #{@damage} damage"
+      else
+        puts "It's super effective!"
+        puts "And it hit #{poke_target.poke_name} with #{@damage} damage"
+      end
+    end
+    @damage
   end
 
   def increase_stats(target)

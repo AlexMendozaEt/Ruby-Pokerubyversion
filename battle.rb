@@ -22,3 +22,4 @@ class Battle
     # If the winner is the Player increase pokemon stats
   end
 end
+
