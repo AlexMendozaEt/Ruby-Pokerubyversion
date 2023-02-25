@@ -6,7 +6,7 @@ require_relative "game"
 class POKEMONS
   # include neccesary modules
   include Pokedex
-  attr_reader :attack, :level
+  attr_reader :attack, :level, :stats, :set_current_move
 
 
   def initialize(poke_name, poke_init, level = 1)
@@ -17,6 +17,7 @@ class POKEMONS
     @individual_values = { hp: rand(1..30), attack: rand(1..30), defense: rand(1..30), special_attack: rand(1..30), special_defense: rand(1..30), speed: rand(1..30) }
     @level = level
     @effort_values = {special_defense: 0}
+    @set_current_move = nil
     stats_gene
     # Retrieve pokemon info from Pokedex and set instance variables
     # Calculate Individual Values and store them in instance variable
@@ -61,12 +62,12 @@ class POKEMONS
     @stats[:hp] -= 2
   end
 
-  def set_current_move
-    # Complete this
+  def set_current_move(move_select)
+    @set_current_move = move_select
   end
 
   def fainted?
-    # Complete this
+    !@health.positive?
   end
 
   def attack(target)
