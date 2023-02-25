@@ -24,8 +24,8 @@ module GetInput
 
     input
   end
-  
-  def get_input_poke(prompt,poke_init)
+
+  def get_input_poke(prompt, poke_init)
     input = ""
     puts prompt
     print "> "
@@ -57,6 +57,7 @@ module GetInput
     end
     input
   end
+
   def get_with_options_battle(options)
     input = ""
     until options.include?(input.downcase)
