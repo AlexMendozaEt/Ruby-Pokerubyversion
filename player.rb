@@ -11,4 +11,3 @@ class Player
 end
 
 # Create a class Bot that inherits from Player and override the select_move method
-
