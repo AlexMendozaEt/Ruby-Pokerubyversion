@@ -7,7 +7,6 @@ class POKEMONS
   # include neccesary modules
   include Pokedex
   include Pokedex
-
   attr_reader :attack, :level, :stats, :current_move, :types, :damage, :poke_name, :hp, :moves, :base_experience
 
   def initialize(poke_name, poke_init, level = 1)

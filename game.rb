@@ -13,7 +13,6 @@ end
 class Game
   include GetInput
   include Texts
-
   def start
     welcome
     player_name = get_input("First, what is your name?")
